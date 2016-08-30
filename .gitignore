@@ -30,3 +30,5 @@ console/bx
 /release/bx
 /release/bx.exe
 *.zpl
+
+/build
