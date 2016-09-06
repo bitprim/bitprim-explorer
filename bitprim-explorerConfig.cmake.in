@@ -1,0 +1,13 @@
+# - Config file for the BITPRIM_EXPLORER package
+#
+#  BITPRIM_EXPLORER_INCLUDE_DIRS - include directories for BITPRIM_EXPLORER
+#  BITPRIM_EXPLORER_LIBRARIES    - libraries to link against
+
+get_filename_component(BITPRIM_EXPLORER_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(BITPRIM_EXPLORER_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+
+include("${BITPRIM_EXPLORER_CMAKE_DIR}/bitprim-explorerTargets.cmake")
+set(BITPRIM_EXPLORER_LIBRARIES bitprim-explorer)
+
+find_package(bitprim-client 3.0.0 REQUIRED)
+find_package(bitprim-network 3.0.0 REQUIRED)

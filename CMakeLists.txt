@@ -1,8 +1,8 @@
 cmake_policy(VERSION 3.4)
 
-# libbitcoin-explorer
+# bitprim-explorer
 #==============================================================================
-project(libbitcoin-explorer
+project(bitprim-explorer
   VERSION 3.0.0
   LANGUAGES CXX C)
 cmake_minimum_required(VERSION 3.4)
@@ -37,15 +37,15 @@ find_package(
   Boost 1.56.0 REQUIRED
   COMPONENTS unit_test_framework)
 
-# Require bitcoin-client of at least version 3.0.0 and output ${bitcoin_client_CPPFLAGS/LIBS/PKG}.
+# Require bitprim-client of at least version 3.0.0 and output ${bitprim_client_CPPFLAGS/LIBS/PKG}.
 #------------------------------------------------------------------------------
-if (NOT TARGET libbitcoin-client)
-  find_package(libbitcoin-client 3.0.0 REQUIRED)
+if (NOT TARGET bitprim-client)
+  find_package(bitprim-client 3.0.0 REQUIRED)
 endif()
 
-# Require bitcoin-network of at least version 3.0.0 and output ${bitcoin_network_CPPFLAGS/LIBS/PKG}.
-if (NOT TARGET libbitcoin-network)
-  find_package(libbitcoin-network 3.0.0 REQUIRED)
+# Require bitprim-network of at least version 3.0.0 and output ${bitprim_network_CPPFLAGS/LIBS/PKG}.
+if (NOT TARGET bitprim-network)
+  find_package(bitprim-network 3.0.0 REQUIRED)
 endif()
 
 # Set flags.
@@ -127,14 +127,14 @@ _add_cxx_compile_flag(-fvisibility-inlines-hidden _has_visibility_inlines_hidden
 
 # Build
 #==============================================================================
-# src/libbitcoin-explorer.la => ${libdir}
+# src/bitprim-explorer.la => ${libdir}
 #------------------------------------------------------------------------------
 set(MODE STATIC)
 if (ENABLE_SHARED)
   set(MODE SHARED)
 endif()
 
-add_library(libbitcoin-explorer ${MODE}
+add_library(bitprim-explorer ${MODE}
   src/callback_state.cpp
   src/dispatch.cpp
   src/display.cpp
@@ -252,24 +252,24 @@ add_library(libbitcoin-explorer ${MODE}
   src/config/signature.cpp
   src/config/transaction.cpp
   src/config/wrapper.cpp)
-target_include_directories(libbitcoin-explorer PUBLIC
+target_include_directories(bitprim-explorer PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
-target_compile_definitions(libbitcoin-explorer PUBLIC -DBCX_STATIC)
+target_compile_definitions(bitprim-explorer PUBLIC -DBCX_STATIC)
 if (NOT MSVC)
-  target_compile_definitions(libbitcoin-explorer PUBLIC -DSYSCONFDIR=\"${SYSCONFDIR}\")
+  target_compile_definitions(bitprim-explorer PUBLIC -DSYSCONFDIR=\"${SYSCONFDIR}\")
 endif()
 
-target_link_libraries(libbitcoin-explorer libbitcoin-client libbitcoin-network)
+target_link_libraries(bitprim-explorer bitprim-client bitprim-network)
 
 # Group sources
 file(GLOB_RECURSE headers
   RELATIVE ${CMAKE_CURRENT_LIST_DIR}
   include/*.h include/*.hpp)
-target_sources(libbitcoin-explorer PRIVATE "${headers}")
+target_sources(bitprim-explorer PRIVATE "${headers}")
 
-get_target_property(sources libbitcoin-explorer SOURCES)
+get_target_property(sources bitprim-explorer SOURCES)
 foreach (source ${sources})
   get_filename_component(group ${source} DIRECTORY)
   if (MSVC)
@@ -278,10 +278,10 @@ foreach (source ${sources})
   source_group("${group}" FILES ${source})
 endforeach()
 
-# local: test/libbitcoin_explorer_test
+# local: test/bitprim_explorer_test
 #------------------------------------------------------------------------------
 if (WITH_TESTS)
-  add_executable(libbitcoin_explorer_test
+  add_executable(bitprim_explorer_test
     test/generated__broadcast.cpp
     test/generated__find.cpp
     test/generated__formerly.cpp
@@ -380,20 +380,20 @@ if (WITH_TESTS)
     test/commands/wrap-encode.cpp
     test/config/address.cpp)
   if (ENABLE_SHARED)
-    target_compile_definitions(libbitcoin_explorer_test PRIVATE -DBOOST_TEST_DYN_LINK)
+    target_compile_definitions(bitprim_explorer_test PRIVATE -DBOOST_TEST_DYN_LINK)
   endif()
-  target_link_libraries(libbitcoin_explorer_test libbitcoin-explorer)
+  target_link_libraries(bitprim_explorer_test bitprim-explorer)
 
-  target_include_directories(libbitcoin_explorer_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
-  target_link_libraries(libbitcoin_explorer_test
+  target_include_directories(bitprim_explorer_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
+  target_link_libraries(bitprim_explorer_test
     ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
   enable_testing()
-  set(_libbitcoin_tests generated obsolete offline config stub)
-  foreach (_test_name ${_libbitcoin_tests})
+  set(_bitprim_tests generated obsolete offline config stub)
+  foreach (_test_name ${_bitprim_tests})
     add_test(
       NAME test.${_test_name}
-      COMMAND libbitcoin_explorer_test
+      COMMAND bitprim_explorer_test
         --run_test=${_test_name}
         --show_progress=no
         --detect_memory_leak=0
@@ -407,7 +407,7 @@ endif()
 if (WITH_CONSOLE)
   add_executable(console.bx
     console/main.cpp)
-  target_link_libraries(console.bx libbitcoin-explorer)
+  target_link_libraries(console.bx bitprim-explorer)
 
   set_target_properties(
     console.bx PROPERTIES
@@ -416,8 +416,8 @@ endif()
 
 # Install
 #==============================================================================
-install(TARGETS libbitcoin-explorer
-  EXPORT libbitcoin-explorer
+install(TARGETS bitprim-explorer
+  EXPORT bitprim-explorer
   ARCHIVE DESTINATION lib)
 
 if (WITH_CONSOLE)
@@ -425,7 +425,7 @@ if (WITH_CONSOLE)
     RUNTIME DESTINATION bin)
 endif()
 
-set(_libbitcoin_headers
+set(_bitprim_headers
   # include_bitcoin_HEADERS =
   bitcoin/explorer.hpp
   # include_bitcoin_explorer_HEADERS =
@@ -554,7 +554,7 @@ set(_libbitcoin_headers
   # include_bitcoin_explorer_impl_HEADERS =
   bitcoin/explorer/impl/prop_tree.ipp
   bitcoin/explorer/impl/utility.ipp)
-foreach (_header ${_libbitcoin_headers})
+foreach (_header ${_bitprim_headers})
   get_filename_component(_directory "${_header}" DIRECTORY)
   install(FILES "include/${_header}" DESTINATION "include/${_directory}")
 endforeach()
@@ -563,9 +563,9 @@ endforeach()
 #==============================================================================
 include(CMakePackageConfigHelpers)
 
-export(EXPORT libbitcoin-explorer
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/libbitcoin-explorerTargets.cmake")
-export(PACKAGE libbitcoin-explorer)
+export(EXPORT bitprim-explorer
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/bitprim-explorerTargets.cmake")
+export(PACKAGE bitprim-explorer)
 
 if (UNIX)
   set(_config_package_location "lib/cmake")
@@ -573,21 +573,21 @@ elseif (WIN32)
   set(_config_package_location "cmake")
 endif()
 
-install(EXPORT libbitcoin-explorer
-  FILE libbitcoin-explorerTargets.cmake
+install(EXPORT bitprim-explorer
+  FILE bitprim-explorerTargets.cmake
   DESTINATION ${_config_package_location})
 
-configure_file(libbitcoin-explorerConfig.cmake.in
-  "${CMAKE_CURRENT_BINARY_DIR}/libbitcoin-explorerConfig.cmake"
+configure_file(bitprim-explorerConfig.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/bitprim-explorerConfig.cmake"
   @ONLY)
 
 write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/libbitcoin-explorerConfigVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/bitprim-explorerConfigVersion.cmake"
   VERSION ${PROJECT_VERSION}
   COMPATIBILITY AnyNewerVersion)
 
 install(
   FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/libbitcoin-explorerConfig.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/libbitcoin-explorerConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/bitprim-explorerConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/bitprim-explorerConfigVersion.cmake"
   DESTINATION ${_config_package_location})
