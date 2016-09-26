@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 3.4)
 project(bitprim-explorer
   VERSION 3.0.0
   LANGUAGES CXX C)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Check for baseline language coverage in the compiler for the C++11 standard.
 #------------------------------------------------------------------------------
@@ -262,6 +263,8 @@ endif()
 
 target_link_libraries(bitprim-explorer bitprim-client bitprim-network)
 
+set_target_properties(bitprim-explorer PROPERTIES FOLDER "explorer")
+
 # Group sources
 file(GLOB_RECURSE headers
   RELATIVE ${CMAKE_CURRENT_LIST_DIR}
@@ -277,6 +280,8 @@ foreach (source ${sources})
   source_group("${group}" FILES ${source})
 endforeach()
 
+# Tests
+#==============================================================================
 # local: test/bitprim_explorer_test
 #------------------------------------------------------------------------------
 if (WITH_TESTS)
@@ -387,6 +392,8 @@ if (WITH_TESTS)
   target_link_libraries(bitprim_explorer_test
     ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
+  set_target_properties(bitprim_explorer_test PROPERTIES FOLDER "explorer")
+
   enable_testing()
   set(_bitprim_tests generated obsolete offline config stub)
   foreach (_test_name ${_bitprim_tests})
@@ -410,6 +417,7 @@ if (WITH_CONSOLE)
 
   set_target_properties(
     console.bx PROPERTIES
+    FOLDER "explorer"
     OUTPUT_NAME bx)
 endif()
 
