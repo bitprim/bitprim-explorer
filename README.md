@@ -4,7 +4,7 @@
 
 *The automated build often fails on generating test metrics due to performance limits on Travis.*
 
-# Bitcoin Explorer
+# Bitprim Explorer
 
 *The Bitcoin Command Line Tool*
 
@@ -16,19 +16,19 @@
 
 All files in this repository fall under the license specified in [COPYING](https://github.com/libbitcoin/libbitcoin-explorer/blob/version2/COPYING). The project is licensed as [AGPL with a lesser clause](https://wiki.unsystem.net/en/index.php/Libbitcoin/License). It may be used within a proprietary project, but the core library and any changes to it must be published on-line. Source code for this library must always remain free for everybody to access.
 
-**About Libbitcoin**
+**About Bitprim**
 
-The libbitcoin toolkit is a set of cross platform C++ libraries for building bitcoin applications. The toolkit consists of several libraries, most of which depend on the foundational [libbitcoin](https://github.com/libbitcoin/libbitcoin) library. Each library's repository can be cloned and built using common [Automake](http://www.gnu.org/software/automake) instructions.
+The bitprim toolkit is a set of cross platform C++ libraries for building bitcoin applications. The toolkit consists of several libraries, most of which depend on the foundational [bitprim-core](https://github.com/bitprim/bitprim-core) library. Each library's repository can be cloned and built using common [Automake](http://www.gnu.org/software/automake) instructions.
 
-**About Libbitcoin Explorer**
+**About Bitprim Explorer**
 
-BX is a command line tool for working with Bitcoin. It can be built as a single portable executable for Linux, OSX or Windows and is available for download as a signed single executable for each. BX exposes over 80 commands and supports network communication with [libbitcoin-server](https://github.com/libbitcoin/libbitcoin-server) or its predecessor [Obelisk](https://github.com/spesmilo/obelisk), and the P2P Bitcoin network. BX is well documented and supports simple and advanced scenarios, including stealth and multisig.
+BX is a command line tool for working with Bitcoin. It can be built as a single portable executable for Linux, OSX or Windows and is available for download as a signed single executable for each. BX exposes over 80 commands and supports network communication with [bitprim-server](https://github.com/bitprim/bitprim-server) or its predecessor [Obelisk](https://github.com/spesmilo/obelisk), and the P2P Bitcoin network. BX is well documented and supports simple and advanced scenarios, including stealth and multisig.
 
 ## Installation
 
 BX can be built from sources or downloaded as a signed portable [single file executable](https://github.com/libbitcoin/libbitcoin-explorer/wiki/Download-BX).
 
-On Linux and Macintosh BX is built using Autotools as follows and depends on [libbitcoin-client](https://github.com/libbitcoin/libbitcoin-client).
+On Linux and Macintosh BX is built using Autotools as follows and depends on [bitprim-client](https://github.com/bitprim/bitprim-client).
 
 ```sh
 $ ./autogen.sh
@@ -45,7 +45,7 @@ Detailed instructions are provided below.
 
 ### Debian/Ubuntu
 
-Libbitcoin requires a C++11 compiler, currently minimum [GCC 4.8.0](https://gcc.gnu.org/projects/cxx0x.html) or Clang based on [LLVM 3.5](http://llvm.org/releases/3.5.0/docs/ReleaseNotes.html).
+Bitprim requires a C++11 compiler, currently minimum [GCC 4.8.0](https://gcc.gnu.org/projects/cxx0x.html) or Clang based on [LLVM 3.5](http://llvm.org/releases/3.5.0/docs/ReleaseNotes.html).
 
 To see your GCC version:
 ```sh
@@ -72,7 +72,7 @@ Next install the [Boost](http://www.boost.org) (minimum 1.56.0) development pack
 ```sh
 $ sudo apt-get install libboost-all-dev
 ```
-Next download the [install script](https://github.com/libbitcoin/libbitcoin-explorer/blob/version2/install.sh) and enable execution:
+Next download the [install script](https://github.com/bitprim/bitprim-explorer/blob/version2/install.sh) and enable execution:
 ```sh
 $ wget https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version2/install.sh
 $ chmod +x install.sh
@@ -119,7 +119,7 @@ Next install the [Boost](http://www.boost.org) (1.56.0 or newer) development pac
 ```sh
 $ brew install boost
 ```
-Next download the [install script](https://github.com/libbitcoin/libbitcoin-explorer/blob/version2/install.sh) and enable execution:
+Next download the [install script](https://github.com/bitprim/bitprim-explorer/blob/version2/install.sh) and enable execution:
 ```sh
 $ wget https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version2/install.sh
 $ chmod +x install.sh
@@ -142,7 +142,7 @@ Next install the [Boost](http://www.boost.org) (1.56.0 or newer) development pac
 ```sh
 $ sudo port install boost -no_single -no_static -python27
 ```
-Next download the [install script](https://github.com/libbitcoin/libbitcoin-explorer/blob/version2/install.sh) and enable execution:
+Next download the [install script](https://github.com/bitprim/bitprim-explorer/blob/version2/install.sh) and enable execution:
 ```sh
 $ wget https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version2/install.sh
 $ chmod +x install.sh
