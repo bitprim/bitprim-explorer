@@ -1,11 +1,11 @@
-scmake_policy(VERSION 3.4)
+cmake_minimum_required(VERSION 3.4)
 
 # bitprim-explorer
 #==============================================================================
 project(bitprim-explorer
   VERSION 3.0.0
   LANGUAGES CXX C)
-cmake_minimum_required(VERSION 3.4)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Check for baseline language coverage in the compiler for the C++11 standard.
 #------------------------------------------------------------------------------
@@ -127,6 +127,27 @@ _add_cxx_compile_flag(-fvisibility-inlines-hidden _has_visibility_inlines_hidden
 
 # Build
 #==============================================================================
+function(_group_sources target sources_dir)
+  file(GLOB_RECURSE _headers
+    ${sources_dir}/include/*.h ${sources_dir}/include/*.hpp)
+  target_sources(${target} PRIVATE ${_headers})
+
+  get_target_property(sources ${target} SOURCES)
+  foreach (source ${sources})
+    get_filename_component(group ${source} ABSOLUTE)
+    get_filename_component(group ${group} DIRECTORY)
+    file(RELATIVE_PATH group "${sources_dir}" "${group}")
+    if (group)
+      if (MSVC)
+        string(REPLACE "/" "\\" group "${group}")
+      endif()
+      source_group("${group}" FILES "${source}")
+    endif()
+  endforeach()
+
+  set_target_properties(${target} PROPERTIES FOLDER "explorer")
+endfunction()
+
 # src/bitprim-explorer.la => ${libdir}
 #------------------------------------------------------------------------------
 set(MODE STATIC)
@@ -263,20 +284,32 @@ endif()
 
 target_link_libraries(bitprim-explorer bitprim-client bitprim-network)
 
-# Group sources
-file(GLOB_RECURSE headers
-  RELATIVE ${CMAKE_CURRENT_LIST_DIR}
-  include/*.h include/*.hpp)
-target_sources(bitprim-explorer PRIVATE "${headers}")
+_group_sources(bitprim-explorer "${CMAKE_CURRENT_LIST_DIR}")
 
-get_target_property(sources bitprim-explorer SOURCES)
-foreach (source ${sources})
-  get_filename_component(group ${source} DIRECTORY)
-  if (MSVC)
-    string(REPLACE "/" "\\" group ${group})
+# Tests
+#==============================================================================
+function(_add_tests target)
+  if (ENABLE_SHARED)
+    target_compile_definitions(${target} PRIVATE -DBOOST_TEST_DYN_LINK)
   endif()
-  source_group("${group}" FILES ${source})
-endforeach()
+  target_include_directories(${target} SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
+  target_link_libraries(${target} PUBLIC ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
+
+  foreach (_test_name ${ARGN})
+    add_test(
+      NAME test.explorer.${_test_name}
+      COMMAND ${target}
+        --run_test=${_test_name}
+        --show_progress=no
+        --detect_memory_leak=0
+        --report_level=no
+        --build_info=yes)
+  endforeach()
+endfunction()
+
+if (WITH_TESTS)
+  enable_testing()
+endif()
 
 # local: test/bitprim_explorer_test
 #------------------------------------------------------------------------------
@@ -379,27 +412,15 @@ if (WITH_TESTS)
     test/commands/wrap-decode.cpp
     test/commands/wrap-encode.cpp
     test/config/address.cpp)
-  if (ENABLE_SHARED)
-    target_compile_definitions(bitprim_explorer_test PRIVATE -DBOOST_TEST_DYN_LINK)
-  endif()
-  target_link_libraries(bitprim_explorer_test bitprim-explorer)
+  target_link_libraries(bitprim_explorer_test PUBLIC bitprim-explorer)
+  _group_sources(bitprim_explorer_test "${CMAKE_CURRENT_LIST_DIR}/test")
 
-  target_include_directories(bitprim_explorer_test SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
-  target_link_libraries(bitprim_explorer_test
-    ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
-
-  enable_testing()
-  set(_bitprim_tests generated obsolete offline config stub)
-  foreach (_test_name ${_bitprim_tests})
-    add_test(
-      NAME test.${_test_name}
-      COMMAND bitprim_explorer_test
-        --run_test=${_test_name}
-        --show_progress=no
-        --detect_memory_leak=0
-        --report_level=no
-        --build_info=yes)
-  endforeach()
+  _add_tests(bitprim_explorer_test
+    generated
+    obsolete
+    offline
+    config
+    stub)
 endif()
 
 # console/bx => ${bindir}
@@ -411,6 +432,7 @@ if (WITH_CONSOLE)
 
   set_target_properties(
     console.bx PROPERTIES
+    FOLDER "explorer"
     OUTPUT_NAME bx)
 endif()
 
