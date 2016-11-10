@@ -266,8 +266,13 @@ public:
         )
         (
             "server.url",
-            value<bc::config::endpoint>(&setting_.server.url)->default_value({ "tcp://obelisk.airbitz.co:9091" }),
+            value<bc::config::endpoint>(&setting_.server.url)->default_value({ "tcp://libbitcoin1.thecodefactory.org:9091" }),
             "The URL of the Libbitcoin/Obelisk server."
+        )
+        (
+            "server.socks_proxy",
+            value<bc::config::authority>(&setting_.server.socks_proxy)->default_value({ "0.0.0.0:0" }),
+            "The address of a SOCKS5 proxy to use, defaults to none."
         )
         (
             "server.connect_retries",
@@ -581,6 +586,22 @@ public:
     }
 
     /**
+     * Get the value of the server.socks_proxy setting.
+     */
+    virtual bc::config::authority get_server_socks_proxy_setting() const
+    {
+        return setting_.server.socks_proxy;
+    }
+
+    /**
+     * Set the value of the server.socks_proxy setting.
+     */
+    virtual void set_server_socks_proxy_setting(bc::config::authority value)
+    {
+        setting_.server.socks_proxy = value;
+    }
+
+    /**
      * Get the value of the server.connect_retries setting.
      */
     virtual explorer::config::byte get_server_connect_retries_setting() const
@@ -734,6 +755,7 @@ private:
         {
             server()
               : url(),
+                socks_proxy(),
                 connect_retries(),
                 connect_timeout_seconds(),
                 server_public_key(),
@@ -742,6 +764,7 @@ private:
             }
 
             bc::config::endpoint url;
+            bc::config::authority socks_proxy;
             explorer::config::byte connect_retries;
             uint16_t connect_timeout_seconds;
             bc::config::sodium server_public_key;

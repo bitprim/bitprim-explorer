@@ -73,7 +73,7 @@ console_result commands::settings::invoke(std::ostream& output,
     list["network.error_file"] = 
         get_network_error_file_setting().string();
 
-    network::settings settings(bc::settings::mainnet);
+    network::settings settings(bc::config::settings::mainnet);
     const auto& nodes = get_network_seeds_setting();
     const auto& seeds = nodes.empty() ? settings.seeds : nodes;
 
@@ -86,6 +86,8 @@ console_result commands::settings::invoke(std::ostream& output,
     // [server]
     list["server.url"] =
         get_server_url_setting().to_string();
+    list["server.socks_proxy"] =
+        get_server_socks_proxy_setting().to_string();
     list["server.connect_retries"] =
         serialize(get_server_connect_retries_setting());
     list["server.connect_timeout_seconds"] =

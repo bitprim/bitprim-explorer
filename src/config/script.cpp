@@ -51,8 +51,7 @@ script::script(const chain::script& value)
 
 script::script(const data_chunk& value)
 {
-    value_.from_data(value, false,
-        chain::script::parse_mode::raw_data_fallback);
+    value_.from_data(value, false);
 }
 
 script::script(const std::vector<std::string>& tokens)
@@ -73,7 +72,7 @@ const data_chunk script::to_data() const
 
 const std::string script::to_string() const
 {
-    static constexpr auto flags = chain::script_context::all_enabled;
+    static constexpr auto flags = chain::rule_fork::all_rules;
     return value_.to_string(flags);
 }
 
@@ -99,7 +98,7 @@ std::istream& operator>>(std::istream& input, script& argument)
 
 std::ostream& operator<<(std::ostream& output, const script& argument)
 {
-    static constexpr auto flags = chain::script_context::all_enabled;
+    static constexpr auto flags = chain::rule_fork::all_rules;
     output << argument.value_.to_string(flags);
     return output;
 }
