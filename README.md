@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/libbitcoin/libbitcoin-explorer.svg?branch=master)](https://travis-ci.org/libbitcoin/libbitcoin-explorer)
-
-[![Coverage Status](https://coveralls.io/repos/libbitcoin/libbitcoin-explorer/badge.svg)](https://coveralls.io/r/libbitcoin/libbitcoin-explorer)
+[![Build Status](https://travis-ci.org/bitprim/bitprim-explorer.svg?branch=master)](https://travis-ci.org/bitprim/bitprim-explorer)
 
 *The automated build often fails on generating test metrics due to performance limits on Travis.*
 
