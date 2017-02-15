@@ -1,21 +1,20 @@
 /**
- * Copyright (c) 2011-2015 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
  *
- * This file is part of libbitcoin-explorer.
+ * This file is part of libbitcoin.
  *
- * libbitcoin-explorer is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Affero General Public License with
- * additional permissions to the one published by the Free Software
- * Foundation, either version 3 of the License, or (at your option)
- * any later version. For more information see LICENSE.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef BX_WATCH_ADDRESS_HPP
 #define BX_WATCH_ADDRESS_HPP
@@ -65,7 +64,7 @@ namespace commands {
 /**
  * Class to implement the watch-address command.
  */
-class BCX_API watch_address 
+class BCX_API watch_address
   : public command
 {
 public:
@@ -126,7 +125,7 @@ public:
      * @param[in]  input  The input stream for loading the parameters.
      * @param[in]         The loaded variables.
      */
-    virtual void load_fallbacks(std::istream& input, 
+    virtual void load_fallbacks(std::istream& input,
         po::variables_map& variables)
     {
         const auto raw = requires_raw_input();
@@ -152,6 +151,11 @@ public:
             BX_CONFIG_VARIABLE ",c",
             value<boost::filesystem::path>(),
             "The path to the configuration settings file."
+        )
+        (
+            "duration,d",
+            value<uint32_t>(&option_.duration)->default_value(600),
+            "The duration of the watch in seconds, defaults to 600."
         )
         (
             "format,f",
@@ -204,6 +208,23 @@ public:
     }
 
     /**
+     * Get the value of the duration option.
+     */
+    virtual uint32_t& get_duration_option()
+    {
+        return option_.duration;
+    }
+
+    /**
+     * Set the value of the duration option.
+     */
+    virtual void set_duration_option(
+        const uint32_t& value)
+    {
+        option_.duration = value;
+    }
+
+    /**
      * Get the value of the format option.
      */
     virtual explorer::config::encoding& get_format_option()
@@ -245,10 +266,12 @@ private:
     struct option
     {
         option()
-          : format()
+          : duration(),
+            format()
         {
         }
 
+        uint32_t duration;
         explorer::config::encoding format;
     } option_;
 };

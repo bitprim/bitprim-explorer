@@ -12,7 +12,7 @@
 
 **License Overview**
 
-All files in this repository fall under the license specified in [COPYING](https://github.com/libbitcoin/libbitcoin-explorer/blob/version2/COPYING). The project is licensed as [AGPL with a lesser clause](https://wiki.unsystem.net/en/index.php/Libbitcoin/License). It may be used within a proprietary project, but the core library and any changes to it must be published on-line. Source code for this library must always remain free for everybody to access.
+All files in this repository fall under the license specified in [COPYING](https://github.com/libbitcoin/libbitcoin-explorer/blob/master/COPYING). The project is licensed as [AGPL with a lesser clause](https://wiki.unsystem.net/en/index.php/Libbitcoin/License). It may be used within a proprietary project, but the core library and any changes to it must be published on-line. Source code for this library must always remain free for everybody to access.
 
 **About Bitprim**
 
@@ -70,9 +70,9 @@ Next install the [Boost](http://www.boost.org) (minimum 1.57.0) development pack
 ```sh
 $ sudo apt-get install libboost-all-dev
 ```
-Next download the [install script](https://github.com/bitprim/bitprim-explorer/blob/version2/install.sh) and enable execution:
+Next download the [install script](https://github.com/bitprim/bitprim-explorer/blob/version3/install.sh) and enable execution:
 ```sh
-$ wget https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version2/install.sh
+$ wget https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version3/install.sh
 $ chmod +x install.sh
 ```
 Finally install BX:
@@ -117,9 +117,9 @@ Next install the [Boost](http://www.boost.org) (1.57.0 or newer) development pac
 ```sh
 $ brew install boost
 ```
-Next download the [install script](https://github.com/bitprim/bitprim-explorer/blob/version2/install.sh) and enable execution:
+Next download the [install script](https://github.com/bitprim/bitprim-explorer/blob/version3/install.sh) and enable execution:
 ```sh
-$ wget https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version2/install.sh
+$ wget https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version3/install.sh
 $ chmod +x install.sh
 ```
 Finally install BX:
@@ -140,9 +140,9 @@ Next install the [Boost](http://www.boost.org) (1.57.0 or newer) development pac
 ```sh
 $ sudo port install boost -no_single -no_static -python27
 ```
-Next download the [install script](https://github.com/bitprim/bitprim-explorer/blob/version2/install.sh) and enable execution:
+Next download the [install script](https://github.com/bitprim/bitprim-explorer/blob/version3/install.sh) and enable execution:
 ```sh
-$ wget https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version2/install.sh
+$ wget https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version3/install.sh
 $ chmod +x install.sh
 ```
 Finally install BX:
@@ -199,8 +199,9 @@ Visual Studio solutions are maintained for all libbitcoin libraries and dependen
 
 Libbitcoin requires a C++11 compiler, which means **Visual Studio 2013** minimum. Additionally a pre-release compiler must be installed as an update to Visual Studio. Download and install the following tools as necessary. Both are available free of charge:
 
-* [Visual Studio 2013 Express](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx)
+* [Visual Studio 2013 Express](https://www.microsoft.com/en-us/download/details.aspx?id=44914)
 * [November 2013 CTP Compiler](http://www.microsoft.com/en-us/download/details.aspx?id=41151)
+* See also: [CTP Compiler installation issue](http://stackoverflow.com/a/34548651/1172329)
 
 #### Create Local NuGet Repository
 

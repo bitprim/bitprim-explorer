@@ -1,21 +1,20 @@
 /**
- * Copyright (c) 2011-2015 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
  *
- * This file is part of libbitcoin-explorer.
+ * This file is part of libbitcoin.
  *
- * libbitcoin-explorer is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Affero General Public License with
- * additional permissions to the one published by the Free Software
- * Foundation, either version 3 of the License, or (at your option)
- * any later version. For more information see LICENSE.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <bitcoin/explorer/config/language.hpp>
 
@@ -26,16 +25,18 @@
 #include <bitcoin/bitcoin.hpp>
 #include <bitcoin/explorer/define.hpp>
 
-using namespace po;
-
 namespace libbitcoin {
 namespace explorer {
 namespace config {
+
+using namespace po;
 
 // DRY
 static auto language_en = "en";
 static auto language_es = "es";
 static auto language_ja = "ja";
+static auto language_it = "it";
+static auto language_fr = "fr";
 static auto language_zh_Hans = "zh_Hans";
 static auto language_zh_Hant = "zh_Hant";
 static auto language_any = "any";
@@ -81,6 +82,10 @@ std::istream& operator>>(std::istream& input, language& argument)
         argument.value_.push_back(&bc::wallet::language::es);
     else if (text == language_ja)
         argument.value_.push_back(&bc::wallet::language::ja);
+    else if (text == language_it)
+        argument.value_.push_back(&bc::wallet::language::it);
+    else if (text == language_fr)
+        argument.value_.push_back(&bc::wallet::language::fr);
     else if (text == language_zh_Hans)
         argument.value_.push_back(&bc::wallet::language::zh_Hans);
     else if (text == language_zh_Hant)
@@ -105,6 +110,10 @@ std::ostream& operator<<(std::ostream& output, const language& argument)
         text = language_es;
     else if (argument.value_.front() == &bc::wallet::language::ja)
         text = language_ja;
+    else if (argument.value_.front() == &bc::wallet::language::it)
+        text = language_it;
+    else if (argument.value_.front() == &bc::wallet::language::fr)
+        text = language_fr;
     else if (argument.value_.front() == &bc::wallet::language::zh_Hans)
         text = language_zh_Hans;
     else if (argument.value_.front() == &bc::wallet::language::zh_Hant)

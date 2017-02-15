@@ -1,21 +1,20 @@
 /**
- * Copyright (c) 2011-2015 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
  *
- * This file is part of libbitcoin-explorer.
+ * This file is part of libbitcoin.
  *
- * libbitcoin-explorer is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Affero General Public License with
- * additional permissions to the one published by the Free Software
- * Foundation, either version 3 of the License, or (at your option)
- * any later version. For more information see LICENSE.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <bitcoin/explorer/commands/fetch-history.hpp>
@@ -27,19 +26,19 @@
 #include <bitcoin/explorer/display.hpp>
 #include <bitcoin/explorer/prop_tree.hpp>
 
-using namespace bc;
+namespace libbitcoin {
+namespace explorer {
+namespace commands {
 using namespace bc::chain;
 using namespace bc::client;
-using namespace bc::explorer;
-using namespace bc::explorer::commands;
 using namespace bc::explorer::config;
 
-// When you restore your wallet, you should use fetch_history(). 
-// But for updating the wallet, use the [new] scan() method- 
+// When you restore your wallet, you should use fetch_history().
+// But for updating the wallet, use the [new] scan() method-
 // which is faster because you avoid pulling the entire history.
 // We can eventually increase privacy and performance (fewer calls to scan())
-// by 'mining' addresses with the same prefix, allowing us to fetch the 
-// prefix group. Obelisk will eventually support privacy enhanced history for 
+// by 'mining' addresses with the same prefix, allowing us to fetch the
+// prefix group. Obelisk will eventually support privacy enhanced history for
 // address scan by prefix.
 console_result fetch_history::invoke(std::ostream& output, std::ostream& error)
 {
@@ -71,11 +70,13 @@ console_result fetch_history::invoke(std::ostream& output, std::ostream& error)
         state.succeeded(error);
     };
 
-    // The v3 client API works with and normalizes either server API.
-    //// client.address_fetch_history(on_error, on_done, address);
-    /* client.address_fetch_history2(on_error, on_done, address); */
-    client.address_fetch_history2(on_error, on_done, address);
+    // This does not include unconfirmed transactions.
+    client.blockchain_fetch_history(on_error, on_done, address);
     client.wait();
 
     return state.get_result();
 }
+
+} //namespace commands
+} //namespace explorer
+} //namespace libbitcoin

@@ -1,21 +1,20 @@
 /**
- * Copyright (c) 2011-2015 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
  *
- * This file is part of libbitcoin-explorer.
+ * This file is part of libbitcoin.
  *
- * libbitcoin-explorer is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Affero General Public License with
- * additional permissions to the one published by the Free Software
- * Foundation, either version 3 of the License, or (at your option)
- * any later version. For more information see LICENSE.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <bitcoin/explorer/commands/tx-encode.hpp>
 
@@ -25,17 +24,19 @@
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/config/transaction.hpp>
 
-using namespace bc;
-using namespace bc::explorer;
-using namespace bc::explorer::commands;
+namespace libbitcoin {
+namespace explorer {
+namespace commands {
 using namespace bc::explorer::config;
 using namespace bc::wallet;
 
 static bool push_scripts(std::vector<tx_output_type>& outputs,
     const explorer::config::output& output, uint8_t script_version)
 {
+    static constexpr uint64_t no_amount = 0;
+
     // explicit script
-    if (!output.script().is_valid())
+    if (!output.is_stealth() && output.script().is_valid())
     {
         outputs.push_back({ output.amount(), output.script() });
         return true;
@@ -45,9 +46,8 @@ static bool push_scripts(std::vector<tx_output_type>& outputs,
     if (output.pay_to_hash() == null_short_hash)
         return false;
 
-    chain::operation::list payment_ops;
+    machine::operation::list payment_ops;
     const auto hash = output.pay_to_hash();
-    const auto is_stealth = !output.ephemeral_data().empty();
 
     // This presumes stealth versions are the same as non-stealth.
     if (output.version() != script_version)
@@ -57,19 +57,11 @@ static bool push_scripts(std::vector<tx_output_type>& outputs,
     else
         return false;
 
-    if (is_stealth)
-    {
-        // Stealth indexing requires an ordered script tuple.
-        // The null data script must be pushed before the pay script.
-        static constexpr uint64_t no_amount = 0;
-        const auto data = output.ephemeral_data();
-        const auto null_data = chain::script::to_null_data_pattern(data);
-        const auto null_data_script = chain::script{ null_data };
-        outputs.push_back({ no_amount, null_data_script });
-    }
+    // If stealth add null data stealth output immediately before payment.
+    if (output.is_stealth())
+        outputs.push_back({ no_amount, output.script() });
 
-    const auto payment_script = chain::script{ payment_ops };
-    outputs.push_back({ output.amount(), payment_script });
+    outputs.push_back({ output.amount(), { payment_ops } });
     return true;
 }
 
@@ -107,3 +99,7 @@ console_result tx_encode::invoke(std::ostream& output, std::ostream& error)
     output << transaction(tx) << std::endl;
     return console_result::okay;
 }
+
+} //namespace commands
+} //namespace explorer
+} //namespace libbitcoin

@@ -1,21 +1,20 @@
 /**
- * Copyright (c) 2011-2015 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
  *
- * This file is part of libbitcoin-explorer.
+ * This file is part of libbitcoin.
  *
- * libbitcoin-explorer is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Affero General Public License with
- * additional permissions to the one published by the Free Software
- * Foundation, either version 3 of the License, or (at your option)
- * any later version. For more information see LICENSE.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <bitcoin/explorer/commands/send-tx-node.hpp>
@@ -32,18 +31,15 @@
 #include <bitcoin/explorer/config/transaction.hpp>
 #include <bitcoin/explorer/utility.hpp>
 
-using namespace bc;
-using namespace bc::explorer;
-using namespace bc::explorer::commands;
+namespace libbitcoin {
+namespace explorer {
+namespace commands {
 using namespace bc::explorer::config;
 using namespace bc::network;
 
 static void handle_signal(int)
 {
-    // Can't pass args using lambda capture for a simple function pointer.
-    // This means there's no way to terminate without using a global variable
-    // or process termination. Since the variable would screw with testing all 
-    // other methods we opt for process termination here.
+    // TODO: exit without process termination.
     exit(console_result::failure);
 }
 
@@ -102,7 +98,7 @@ console_result send_tx_node::invoke(std::ostream& output, std::ostream& error)
         complete.set_value(ec);
     };
 
-    message::transaction_message tx_msg(transaction);
+    message::transaction tx_msg(transaction);
 
     const auto connect_handler = [&state, &tx_msg, &send_handler](
         const code& ec, network::channel::ptr node)
@@ -115,12 +111,15 @@ console_result send_tx_node::invoke(std::ostream& output, std::ostream& error)
     network.connect(host, port, connect_handler);
 
     // Catch C signals for aborting the program.
-    signal(SIGABRT, handle_signal);
     signal(SIGTERM, handle_signal);
     signal(SIGINT, handle_signal);
-    
+
     // Wait until callback indicates completion (connect or timeout).
     complete.get_future();
 
     return state.get_result();
 }
+
+} //namespace commands
+} //namespace explorer
+} //namespace libbitcoin

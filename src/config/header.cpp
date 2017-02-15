@@ -1,21 +1,20 @@
 /**
- * Copyright (c) 2011-2015 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
  *
- * This file is part of libbitcoin-explorer.
+ * This file is part of libbitcoin.
  *
- * libbitcoin-explorer is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Affero General Public License with
- * additional permissions to the one published by the Free Software
- * Foundation, either version 3 of the License, or (at your option)
- * any later version. For more information see LICENSE.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <bitcoin/explorer/config/header.hpp>
 
@@ -27,12 +26,12 @@
 #include <bitcoin/explorer/define.hpp>
 #include <bitcoin/explorer/utility.hpp>
 
-using namespace po;
-using namespace bc::config;
-
 namespace libbitcoin {
 namespace explorer {
 namespace config {
+
+using namespace po;
+using namespace bc::config;
 
 header::header()
   : value_()
@@ -78,7 +77,7 @@ std::ostream& operator<<(std::ostream& output, const header& argument)
     const auto bytes = argument.value_.to_data();
 
     // header base16 is a private encoding in bx, used to pass between commands.
-    output << base16(bytes);
+    output << bc::config::base16(bytes);
     return output;
 }
 

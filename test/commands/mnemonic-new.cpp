@@ -1,21 +1,20 @@
 /**
- * Copyright (c) 2011-2015 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
  *
- * This file is part of libbitcoin-explorer.
+ * This file is part of libbitcoin.
  *
- * libbitcoin-explorer is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Affero General Public License with
- * additional permissions to the one published by the Free Software
- * Foundation, either version 3 of the License, or (at your option)
- * any later version. For more information see LICENSE.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "command.hpp"
@@ -82,6 +81,24 @@ BOOST_AUTO_TEST_CASE(mnemonic_new__invoke__128_bits_es__okay_output)
     command.set_seed_argument({ "baadf00dbaadf00dbaadf00dbaadf00d" });
     BX_REQUIRE_OKAY(command.invoke(output, error));
     BX_REQUIRE_OUTPUT("previo humilde actuar jarabe tabique ahorro tope pulpo anís señal lavar bahía\n");
+}
+
+BOOST_AUTO_TEST_CASE(mnemonic_new__invoke__128_bits_it__okay_output)
+{
+    BX_DECLARE_COMMAND(mnemonic_new);
+    command.set_language_option({ "it" });
+    command.set_seed_argument({ "baadf00dbaadf00dbaadf00dbaadf00d" });
+    BX_REQUIRE_OKAY(command.invoke(output, error));
+    BX_REQUIRE_OUTPUT("rizoma lastra affabile lucidato sultano algebra tramonto rupe annuncio sonda mega bavosa\n");
+}
+
+BOOST_AUTO_TEST_CASE(mnemonic_new__invoke__128_bits_fr__okay_output)
+{
+    BX_DECLARE_COMMAND(mnemonic_new);
+    command.set_language_option({ "fr" });
+    command.set_seed_argument({ "baadf00dbaadf00dbaadf00dbaadf00d" });
+    BX_REQUIRE_OKAY(command.invoke(output, error));
+    BX_REQUIRE_OUTPUT("placard garantir acerbe gratuit soluble affaire théorie ponctuel anguleux salon horrible bateau\n");
 }
 
 BOOST_AUTO_TEST_CASE(mnemonic_new__invoke__128_bits_ja__okay_output)

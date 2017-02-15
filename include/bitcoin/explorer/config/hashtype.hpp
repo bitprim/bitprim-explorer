@@ -1,21 +1,20 @@
 /**
- * Copyright (c) 2011-2015 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
  *
- * This file is part of libbitcoin-explorer.
+ * This file is part of libbitcoin.
  *
- * libbitcoin-explorer is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Affero General Public License with
- * additional permissions to the one published by the Free Software
- * Foundation, either version 3 of the License, or (at your option)
- * any later version. For more information see LICENSE.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef BX_HASHTYPE_HPP
 #define BX_HASHTYPE_HPP
@@ -50,7 +49,7 @@ public:
      * Initialization constructor.
      * @param[in]  value  The value to initialize with.
      */
-    hashtype(const chain::sighash_algorithm& value);
+    hashtype(const machine::sighash_algorithm& value);
 
     /**
      * Copy constructor.
@@ -62,7 +61,7 @@ public:
      * Return a reference to the data member.
      * @return  A reference to the object's internal data.
      */
-    operator chain::sighash_algorithm() const;
+    operator machine::sighash_algorithm() const;
 
     /**
      * Overload stream in. Throws if input is invalid.
@@ -87,7 +86,7 @@ private:
     /**
      * The state of this object's sighash engine data.
      */
-    chain::sighash_algorithm value_;
+    machine::sighash_algorithm value_;
 };
 
 } // namespace config

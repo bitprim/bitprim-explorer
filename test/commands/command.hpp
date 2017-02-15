@@ -1,21 +1,20 @@
 /**
- * Copyright (c) 2011-2015 libbitcoin developers (see AUTHORS)
+ * Copyright (c) 2011-2017 libbitcoin developers (see AUTHORS)
  *
- * This file is part of libbitcoin-explorer.
+ * This file is part of libbitcoin.
  *
- * libbitcoin-explorer is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Affero General Public License with
- * additional permissions to the one published by the Free Software
- * Foundation, either version 3 of the License, or (at your option)
- * any later version. For more information see LICENSE.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef SETUP_HPP
 #define SETUP_HPP
@@ -51,14 +50,14 @@ using namespace bc::explorer::config;
 // Default network parameters.
 #define BX_NETWORK_RETRY 0
 #define BX_NETWORK_TIMEOUT 3
-#define BX_MAINNET_HOST "50.244.13.28"
+#define BX_MAINNET_HOST "50.244.13.27"
 #define BX_MAINNET_PORT 8333
 
-// Libbitcoin Server (production)
-#define BX_MAINNET_SERVER "tcp://libbitcoin1.thecodefactory.org:9091"
+// Libbitcoin Server (mainnet)
+#define BX_MAINNET_SERVER "tcp://mainnet1.libbitcoin.net:9091"
 
 // Libbitcoin Server (testnet)
-#define BX_TESTNET_SERVER "tcp://libbitcoin1.thecodefactory.org:19091"
+#define BX_TESTNET_SERVER "tcp://testnet1.libbitcoin.net:19091"
 
 #define BX_DECLARE_COMMAND(extension) \
     std::stringstream output, error; \
