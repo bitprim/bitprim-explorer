@@ -160,7 +160,7 @@ public:
         )
         (
             "version,v",
-            value<explorer::config::byte>(&option_.version)->default_value(0),
+            value<explorer::config::byte>(&option_.version)->default_value(libbitcoin::wallet::payment_address::mainnet_p2kh),
             "The desired payment address version, defaults to 0."
         )
         (

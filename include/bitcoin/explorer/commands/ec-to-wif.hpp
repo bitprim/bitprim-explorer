@@ -146,7 +146,7 @@ public:
         )
         (
             "version,v",
-            value<explorer::config::byte>(&option_.version)->default_value(128),
+            value<explorer::config::byte>(&option_.version)->default_value(libbitcoin::wallet::ec_private::mainnet_wif),
             "The desired WIF version, defaults to 128."
         )
         (
