@@ -136,27 +136,20 @@ ptree prop_list(const chain::history::list& rows,
     const payment_address& balance_address)
 {
     ptree tree;
-    uint64_t total_received = 0;
-    uint64_t confirmed_balance = 0;
-    uint64_t unspent_balance = 0;
+    uint64_t spent = 0;
+    uint64_t received = 0;
 
     for (const auto& row: rows)
     {
-        total_received += row.value;
+        received = ceiling_add(received, row.value);
 
-        // spend unconfirmed (or no spend attempted)
-        if (row.spend.hash() == null_hash)
-            unspent_balance += row.value;
-
-        if (row.output_height != 0 &&
-            (row.spend.hash() == null_hash || row.spend_height == 0))
-            confirmed_balance += row.value;
+        if (row.spend.hash() != null_hash)
+            spent = ceiling_add(spent, row.value);
     }
 
     tree.put("address", balance_address);
-    tree.put("confirmed", confirmed_balance);
-    tree.put("received", total_received);
-    tree.put("unspent", unspent_balance);
+    tree.put("received", received);
+    tree.put("spent", spent);
     return tree;
 }
 
@@ -173,9 +166,12 @@ ptree prop_tree(const chain::history::list& rows,
 ptree prop_list(const tx_input_type& tx_input)
 {
     ptree tree;
+
+    // This will have default versioning, but the address version is unused.
     const auto script_address = payment_address::extract(tx_input.script());
+
     if (script_address)
-        tree.put("address", script_address);
+        tree.put("address_hash", hash160(script_address.hash()));
 
     tree.put("previous_output.hash", hash256(tx_input.previous_output().hash()));
     tree.put("previous_output.index", tx_input.previous_output().index());
@@ -225,9 +221,12 @@ ptree prop_tree(const std::vector<input>& inputs, bool json)
 ptree prop_list(const tx_output_type& tx_output)
 {
     ptree tree;
+
+    // This will have default versioning, but the address version is unused.
     const auto address = payment_address::extract(tx_output.script());
+
     if (address)
-        tree.put("address", address);
+        tree.put("address_hash", hash160(address.hash()));
 
     tree.put("script", tx_output.script().to_string(
         machine::rule_fork::all_rules));
@@ -239,6 +238,7 @@ ptree prop_list(const tx_output_type& tx_output)
     {
         uint32_t stealth_prefix;
         ec_compressed ephemeral_key;
+
         if (to_stealth_prefix(stealth_prefix, tx_output.script()) &&
             extract_ephemeral_key(ephemeral_key, tx_output.script()))
         {
@@ -267,27 +267,19 @@ ptree prop_tree(const tx_output_type::list& tx_outputs, bool json)
 
 // points
 
-ptree prop_list(const chain::point& point)
+ptree prop_list(const chain::point_value& point)
 {
     ptree tree;
     tree.put("hash", hash256(point.hash()));
     tree.put("index", point.index());
+    tree.put("value", point.value());
     return tree;
 }
 
-ptree prop_tree(const chain::point::list& points, bool json)
+ptree prop_tree(const chain::points_value& values, bool json)
 {
     ptree tree;
-    for (const auto& point: points)
-        tree.add_child("points", prop_list(point));
-    return tree;
-}
-
-ptree prop_tree(const chain::points_info& points_info, bool json)
-{
-    ptree tree;
-    tree.add_child("points", prop_tree_list("points", points_info.points, json));
-    tree.put("change", points_info.change);
+    tree.add_child("points", prop_tree_list("point", values.points, json));
     return tree;
 }
 
@@ -316,8 +308,8 @@ ptree prop_tree(const transaction& transaction, bool json)
 ptree prop_tree(const std::vector<transaction>& transactions, bool json)
 {
     ptree tree;
-    tree.add_child("transactions",
-        prop_tree_list_of_lists("transaction", transactions, json));
+    tree.add_child("transactions", prop_tree_list_of_lists("transaction",
+        transactions, json));
     return tree;
 }
 
@@ -336,46 +328,6 @@ ptree prop_tree(const wallet::wrapped_data& wrapper)
 {
     ptree tree;
     tree.add_child("wrapper", prop_list(wrapper));
-    return tree;
-}
-
-//// watch_filter
-//
-//ptree prop_list(const tx_type& tx, const hash_digest& block_hash,
-//    const base2& filter, bool json)
-//{
-//    ptree tree;
-//    tree.add("block", hash256(block_hash));
-//    tree.add("filter", filter);
-//    tree.add_child("transaction", prop_list(tx, json));
-//    return tree;
-//}
-//
-//ptree prop_tree(const tx_type& tx, const hash_digest& block_hash,
-//    const base2& filter, bool json)
-//{
-//    ptree tree;
-//    tree.add_child("watch_filter", prop_list(tx, block_hash, filter, json));
-//    return tree;
-//}
-
-// watch_address
-
-ptree prop_list(const tx_type& tx, const hash_digest& block_hash,
-    const payment_address& address, bool json)
-{
-    ptree tree;
-    tree.add("block", hash256(block_hash));
-    tree.add("address", address);
-    tree.add_child("transaction", prop_list(tx, json));
-    return tree;
-}
-
-ptree prop_tree(const tx_type& tx, const hash_digest& block_hash,
-    const payment_address& address, bool json)
-{
-    ptree tree;
-    tree.add_child("watch_address", prop_list(tx, block_hash, address, json));
     return tree;
 }
 
@@ -457,6 +409,7 @@ ptree prop_tree(const hash_digest& hash, size_t height, size_t index)
 ptree prop_tree(const settings_list& settings)
 {
     ptree list;
+
     for (const auto& setting: settings)
         list.put(setting.first, setting.second);
 

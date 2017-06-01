@@ -58,8 +58,10 @@ namespace commands {
 /**
  * Various localizable strings.
  */
-#define BX_FETCH_STEALTH_FILTER_TOO_LONG \
-    "Stealth prefix filter is limited to 32 bits."
+#define BX_FETCH_STEALTH_PREFIX_TOO_LONG \
+    "Stealth prefix is limited to 32 bits."
+#define BX_FETCH_STEALTH_FILTER_TOO_SHORT \
+    "Stealth prefix must be at least 8 bits."
 
 /**
  * Class to implement the fetch-stealth command.
@@ -156,7 +158,7 @@ public:
         (
             "FILTER",
             value<bc::config::base2>(&argument_.filter),
-            "The Base2 stealth prefix filter used to locate transactions. Defaults to all stealth transactions."
+            "The Base2 stealth prefix filter used to locate transactions. Must be at least 8 bits in length."
         );
 
         return options;

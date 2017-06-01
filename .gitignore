@@ -32,3 +32,6 @@ console/bx
 *.zpl
 
 /build
+
+.idea/
+cmake-build-debug/

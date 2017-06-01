@@ -27,7 +27,7 @@ $ git clone https://github.com/bitprim/bitprim-explorer.git
 $ cd bitprim-explorer
 $ mkdir build
 $ cd build
-$ cmake .. -DWITH_TESTS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-std=c++11" 
+$ cmake .. -DWITH_TESTS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-std=c++11"
 $ make -j2
 $ sudo make install
 ```

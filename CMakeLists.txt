@@ -259,6 +259,7 @@ add_library(bitprim-explorer ${MODE}
   src/commands/wif-to-public.cpp
   src/commands/wrap-decode.cpp
   src/commands/wrap-encode.cpp
+  src/commands/watch-stealth.cpp
   src/config/address.cpp
   src/config/algorithm.cpp
   src/config/btc.cpp
@@ -417,6 +418,7 @@ if (WITH_TESTS)
     test/commands/wif-to-public.cpp
     test/commands/wrap-decode.cpp
     test/commands/wrap-encode.cpp
+    test/commands/watch-stealth.cpp
     test/config/address.cpp)
   target_link_libraries(bitprim_explorer_test PUBLIC bitprim-explorer)
   _group_sources(bitprim_explorer_test "${CMAKE_CURRENT_LIST_DIR}/test")
@@ -553,6 +555,7 @@ set(_bitprim_headers
   bitcoin/explorer/commands/uri-encode.hpp
   bitcoin/explorer/commands/validate-tx.hpp
   bitcoin/explorer/commands/watch-address.hpp
+  bitcoin/explorer/commands/watch-stealth.hpp
   bitcoin/explorer/commands/watch-tx.hpp
   bitcoin/explorer/commands/wif-to-ec.hpp
   bitcoin/explorer/commands/wif-to-public.hpp

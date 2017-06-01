@@ -219,27 +219,19 @@ BCX_API pt::ptree prop_tree(const tx_output_type::list& tx_outputs,
     bool json);
 
 /**
- * Generate a property list for a point.
- * @param[in]  p          The point.
- * @return                A property list.
+ * Generate a property list for a point value.
+ * @param[in]  point  The point value.
+ * @return            A property list.
  */
-BCX_API pt::ptree prop_list(const chain::point& point);
+BCX_API pt::ptree prop_list(const chain::point_value& point);
 
 /**
- * Generate a property tree for a set of points.
- * @param[in]  points  The set of points.
- * @param[in]  json        Use json array formatting.
- * @return                 A property tree.
+ * Generate a property tree for points value.
+ * @param[in]  info  The points value.
+ * @param[in]  json  Use json array formatting.
+ * @return           A property tree.
  */
-BCX_API pt::ptree prop_tree(const chain::point::list& points, bool json);
-
-/**
- * Generate a property tree for a points_info.
- * @param[in]  p_info       The points_info.
- * @param[in]  json         Use json array formatting.
- * @return                  A property tree.
- */
-BCX_API pt::ptree prop_tree(const chain::points_info& points_info, bool json);
+BCX_API pt::ptree prop_tree(const chain::points_value& values, bool json);
 
 /**
  * Generate a property list for a transaction.
@@ -279,50 +271,6 @@ BCX_API pt::ptree prop_list(const wallet::wrapped_data& wrapper);
  * @return              A property tree.
  */
 BCX_API pt::ptree prop_tree(const wallet::wrapped_data& wrapper);
-
-///**
-// * Generate a property list for transaction with extended data.
-// * @param[in]  tx          The transaction.
-// * @param[in]  block_hash  The block_hash of the transaction.
-// * @param[in]  filter      The filter used to locate the transaction.
-// * @param[in]  json        Use json array formatting.
-// * @return                 A property list.
-// */
-//BCX_API pt::ptree prop_list(const tx_type& tx, const hash_digest& block_hash,
-//    const base2& filter, bool json);
-//
-///**
-// * Generate a property tree for transaction with extended data.
-// * @param[in]  tx          The transaction.
-// * @param[in]  block_hash  The block_hash of the transaction.
-// * @param[in]  filter      The filter used to locate the transaction.
-// * @param[in]  json        Use json array formatting.
-// * @return                 A property tree.
-// */
-//BCX_API pt::ptree prop_tree(const tx_type& tx, const hash_digest& block_hash,
-//    const base2& filter, bool json);
-
-/**
- * Generate a property list for transaction with extended data.
- * @param[in]  tx          The transaction.
- * @param[in]  block_hash  The block_hash of the transaction.
- * @param[in]  address     The address used to locate the transaction.
- * @param[in]  json        Use json array formatting.
- * @return                 A property list.
- */
-BCX_API pt::ptree prop_list(const tx_type& tx, const hash_digest& block_hash,
-    const wallet::payment_address& address, bool json);
-
-/**
- * Generate a property tree for transaction with extended data.
- * @param[in]  tx          The transaction.
- * @param[in]  block_hash  The block_hash of the transaction.
- * @param[in]  address     The address used to locate the transaction.
- * @param[in]  json        Use json array formatting.
- * @return                 A property tree.
- */
-BCX_API pt::ptree prop_tree(const tx_type& tx, const hash_digest& block_hash,
-    const wallet::payment_address& address, bool json);
 
 /**
  * Generate a property list for a stealth address.
